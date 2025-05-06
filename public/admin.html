@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Page</title>
+  <!-- Flowbite CSS (with Tailwind base, for Flowbite components) -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.css" rel="stylesheet" />
+</head>
+<body class="bg-gray-50 dark:bg-gray-900 min-h-screen flex flex-col">
+  <!-- Navbar: Main navigation bar with dark mode toggle and user menu -->
+  <nav class="bg-white border-gray-200 dark:bg-gray-900 fixed w-full z-20 top-0 left-0 border-b dark:border-gray-600">
+    <div class="max-w-screen-xxl flex flex-wrap items-center justify-between mx-auto p-4">
+      <a href="/" class="flex items-center space-x-3 rtl:space-x-reverse">
+        <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white" placeholder="by tasana dev">UserCheckIn</span>
+      </a>
+      <!-- Hamburger menu button for mobile navigation -->
+      <button data-collapse-toggle="navbar-default" type="button" class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700" aria-controls="navbar-default" aria-expanded="false">
+        <span class="sr-only">Open main menu</span>
+        <svg class="w-6 h-6" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+        </svg>
+      </button>
+      <div class="hidden w-full md:flex md:w-auto" id="navbar-default">
+        <div class="flex flex-col md:flex-row md:items-center md:space-x-4 w-full">
+          <div class="login-status hidden mb-2 md:mb-0"></div>
+          <a id="theme-toggle" type="button" class="text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg text-sm p-2.5 flex items-center">
+            <svg id="theme-toggle-dark-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+            <svg id="theme-toggle-light-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4.22 2.47a1 1 0 011.42 1.42l-.7.7a1 1 0 01-1.42-1.42l.7-.7zM18 9a1 1 0 100 2h-1a1 1 0 100-2h1zm-2.47 4.22a1 1 0 011.42 1.42l-.7.7a1 1 0 01-1.42-1.42l.7-.7zM10 16a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zm-4.22-2.47a1 1 0 00-1.42 1.42l.7.7a1 1 0 001.42-1.42l-.7-.7zM4 11a1 1 0 100-2H3a1 1 0 100 2h1zm2.47-6.22a1 1 0 00-1.42-1.42l-.7.7a1 1 0 001.42 1.42l.7-.7z"></path></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+  <div id="signin-content" class="flex items-center justify-center grow pt-24">
+    <!-- Login form or dashboard will be rendered here -->
+  </div>
+
+  <footer class="w-full text-center py-4 text-gray-500 dark:text-gray-400 text-sm border-t border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 fixed bottom-0 left-0 z-10">
+    created by tasana - dev
+  </footer>
+  <!-- Flowbite JS: UI components and interactions -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
+  <script>
+    // Theme toggle logic for dark/light mode
+    const themeToggleBtn = document.getElementById('theme-toggle');
+    const darkIcon = document.getElementById('theme-toggle-dark-icon');
+    const lightIcon = document.getElementById('theme-toggle-light-icon');
+    if (
+      localStorage.getItem('color-theme') === 'dark' ||
+      (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)
+    ) {
+      document.documentElement.classList.add('dark');
+      darkIcon.classList.add('hidden');
+      lightIcon.classList.remove('hidden');
+    } else {
+      document.documentElement.classList.remove('dark');
+      lightIcon.classList.add('hidden');
+      darkIcon.classList.remove('hidden');
+    }
+    themeToggleBtn.addEventListener('click', function() {
+      darkIcon.classList.toggle('hidden');
+      lightIcon.classList.toggle('hidden');
+      if (document.documentElement.classList.contains('dark')) {
+        document.documentElement.classList.remove('dark');
+        localStorage.setItem('color-theme', 'light');
+      } else {
+        document.documentElement.classList.add('dark');
+        localStorage.setItem('color-theme', 'dark');
+      }
+    });
+
+    // Login/dashboard logic: Render dashboard or login form based on user state
+    /**
+     * Render the dashboard UI for a logged-in user
+     * @param {Object} user - User object from localStorage or backend
+     */
+    function renderDashboard(user) {
+
+      // แสดง token ใน console (สำหรับ debug หรือใช้งานต่อยอด)
+      if (user.token) {
+        console.log('JWT Token:', user.token);
+      }
+
+      //remove signin-content
+      document.getElementById('signin-content').remove();
+
+      // Create user icon with dropdown menu
+      document.getElementsByClassName('login-status')[0].innerHTML = `
+        <div class="relative">
+          <button id="userMenuBtn" type="button" class="flex items-center text-sm rounded-full focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400" aria-expanded="false">
+        <span class="sr-only">Open user menu</span>
+        <svg class="w-8 h-8 text-gray-700 dark:text-gray-200" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M12 12c2.7 0 5-2.3 5-5s-2.3-5-5-5-5 2.3-5 5 2.3 5 5 5zm0 2c-3.3 0-10 1.7-10 5v3h20v-3c0-3.3-6.7-5-10-5z"/>
+        </svg>
+          </button>
+          <div id="userDropdown" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg dark:bg-gray-800 z-50">
+        <div class="px-4 py-3">
+          <span class="block text-sm text-gray-900 dark:text-white">${user.name || ''}</span>
+          <span class="block text-xs text-gray-500 dark:text-gray-400">${user.userlevel || 'other'}</span>
+        </div>
+        <div class="border-t border-gray-100 dark:border-gray-700"></div>
+        <ul class="py-1">
+          <li>
+            <a id="logoutBtn" href="#" class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-red-500">ออกจากระบบ</a>
+          </li>
+        </ul>
+          </div>
+        </div>
+      `;
+
+      // Dropdown toggle logic
+      const userMenuBtn = document.getElementById('userMenuBtn');
+      const userDropdown = document.getElementById('userDropdown');
+      userMenuBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        userDropdown.classList.toggle('hidden');
+      });
+      // Hide dropdown when clicking outside
+      document.addEventListener('click', function(e) {
+        if (!userDropdown.classList.contains('hidden')) {
+          userDropdown.classList.add('hidden');
+        }
+      });
+
+      //remove status hidden class
+      document.getElementsByClassName('login-status')[0].classList.remove('hidden');
+
+      document.getElementById('logoutBtn').onclick = function() {
+        localStorage.removeItem('user');
+        location.reload();
+      };
+    }
+
+    /**
+     * Render the login form UI
+     */
+    function renderLogin() {
+      document.getElementById('signin-content').innerHTML = `
+        <div class="w-full max-w-md bg-white rounded-lg shadow dark:bg-gray-800 p-8">
+          <h1 class="text-2xl font-bold mb-6 text-center text-gray-900 dark:text-white">เข้าสู่ระบบ</h1>
+          <form id="loginForm" class="space-y-4">
+            <div>
+              <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Email</label>
+              <input type="email" id="email" name="email" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" required />
+            </div>
+            <div>
+              <label for="password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password</label>
+              <input type="password" id="password" name="password" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" required />
+            </div>
+            <div class="flex items-center justify-between">
+              <a href="/signup.html" class="text-sm text-blue-600 hover:underline dark:text-blue-500">ยังไม่ได้สมัครสมาชิก?</a>
+            </div>
+            <button type="submit" class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">เข้าสู่ระบบ</button>
+            <div id="loginMsg" class="mt-3 text-center text-red-500"></div>
+          </form>
+        </div>
+      `;
+      document.getElementById('loginForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+        // Send login data to backend for MongoDB authentication
+        const res = await fetch('/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password })
+        });
+        const data = await res.json();
+        if (res.ok && data.user) {
+          // Store both user info and token in localStorage
+          localStorage.setItem('user', JSON.stringify({ ...data.user, token: data.token }));
+          renderDashboard({ ...data.user, token: data.token });
+        } else {
+          document.getElementById('loginMsg').textContent = data.message || 'เข้าสู่ระบบไม่สำเร็จ';
+        }
+      });
+    }
+
+    // On page load: check localStorage for user and render appropriate UI
+    const user = localStorage.getItem('user');
+    if (user) {
+      try {
+        renderDashboard(JSON.parse(user));
+      } catch {
+        renderLogin();
+      }
+    } else {
+      renderLogin();
+    }
+  </script>
+</body>
+</html>

@@ -1,3 +1,17 @@
+# Ignore MongoDB data directory
+mongo-data/
+
+# Ignore system/OS files
+.DS_Store
+Thumbs.db
+
+# Ignore environment files
+.env
+.env.*
+
+# Ignore VSCode settings (optional)
+.vscode/
+
 # Logs
 logs
 *.log
