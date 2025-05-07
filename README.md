@@ -2,6 +2,16 @@
 
 Example user check-in system.
 
+> **System Requirements**
+>
+> - **Node.js:** v18.x or higher  
+> - **npm:** v9.x or higher  
+> - **MongoDB:** v5.x or higher (local or Docker)
+>
+> Make sure you have Node.js and npm installed.  
+> [Download Node.js](https://nodejs.org/)  
+> [Download MongoDB](https://www.mongodb.com/try/download/community)
+
 ## Installation & Usage
 
 1. **Install dependencies**  
@@ -40,7 +50,6 @@ Example user check-in system.
    ```
    http://localhost:3000
    ```
-
 
 The system will now be ready for use.
 
