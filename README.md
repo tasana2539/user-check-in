@@ -3,6 +3,11 @@
 url page : 
 - /admin.html
 - /index.html or /
+after install use :
+email : admin@example.com
+password : admin123
+
+for create seat and data befor use
 
 Example user check-in system.
 
