@@ -14,6 +14,8 @@ const bookingRoute = require('./controller/booking');
 app.post('/login', signinRoute);
 app.use('/item', itemRoute);
 app.use('/booking', bookingRoute);
+const userRoute = require('./controller/user');
+app.use('/user', userRoute);
 
 // Serve static files from the views directory
 const path = require('path');
@@ -41,7 +43,7 @@ async function createDefaultAdmin() {
       phone: '0000000000',
       userlevel: 'admin'
     });
-    console.log('✅ Default admin created');
+    console.log('✅ Default admin created : mail admin@example.com password admin123');
   } else {
     console.log('ℹ️ Admin already exists');
   }

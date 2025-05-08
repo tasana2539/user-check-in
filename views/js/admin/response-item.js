@@ -37,16 +37,24 @@ async function createSeat() {
 
         // render the grouped and sorted items
         const result = groupAndSort(data);
-        
+        let seatCheckedCount = 0, seatAvailableCount = 0;
+
         result.forEach(group => {
             const { category, items } = group;
-
+            
             const rowHTML = `
                 <div class="flex space-x-2 my-2">
                     <span class="font-semibold text-gray-700 dark:text-gray-200 mr-2">
                         ${category.toUpperCase()}
                     </span>
                     ${items.map(seat => {
+                        
+                        if ((seat.status === 'available' || !seat.status) && !seat.booking) {
+                            seatAvailableCount++;
+                        } else {
+                            seatCheckedCount++;
+                        }
+                        
                         const isChecked = seat.booking?.status === 'checked';
                         const btnClass = isChecked ? 'bg-gray-500' : 'bg-green-400';
                         const tooltip = isChecked
@@ -67,8 +75,14 @@ async function createSeat() {
                 </div>
             `;
 
+            //show count of checked and available seats
+            document.getElementById('seat-checked-count').innerText = `ที่นั่งที่จองแล้ว: ${seatCheckedCount || 0}`;
+            document.getElementById('seat-available-count').innerText = `ที่นั่งว่าง: ${seatAvailableCount || 0}`;
+
+            // Append the row to the seat map
             seatItem.innerHTML += rowHTML;
         });
+        
     } catch (error) {
         console.error('Error fetching seat data:', error);
         document.getElementById('seat-map').innerHTML = '<p class="text-center text-red-500">เกิดข้อผิดพลาดในการโหลดที่นั่ง</p>';

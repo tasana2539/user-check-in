@@ -30,7 +30,7 @@
   <nav class="bg-white border-gray-200 dark:bg-gray-900 fixed w-full z-20 top-0 left-0 border-b dark:border-gray-600">
     <div class="max-w-screen-xxl flex flex-wrap items-center justify-between mx-auto p-4">
       <a href="/" class="flex items-center space-x-3 rtl:space-x-reverse">
-        <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white" placeholder="by tasana dev">UserCheckIn</span>
+        <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white" placeholder="by tasana dev">Booking</span>
       </a>
       <!-- Hamburger menu button for mobile navigation -->
       <button data-collapse-toggle="navbar-default" type="button" class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700" aria-controls="navbar-default" aria-expanded="false">
@@ -51,13 +51,19 @@
     </div>
   </nav>
   <div id="seat-map-container" class="hidden w-full max-w-2xl mx-auto mt-24 mb-8 p-4 bg-white dark:bg-gray-800 rounded-lg shadow flex flex-col items-center">
+    <div class="grid grid-cols-2 gap-4 mb-4 w-full">
+      <span class="bg-blue-100  text-blue-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-sm dark:bg-blue-900 dark:text-blue-300 checked" id="seat-checked-count">จำนวนการจอง</span>
+      <span class="bg-green-100  text-green-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-sm dark:bg-green-900 dark:text-green-300 available" id="seat-available-count">จำนวนที่นั่งคงเหลือ</span>
+
+    </div>
+
     <h2 class="text-lg font-bold mb-2 text-gray-800 dark:text-gray-100">แผนผังที่นั่ง</h2>
     <div id="seat-map" class="flex flex-col space-y-2 w-full items-center"></div>
-    <div class="text-xs text-gray-500 mt-2">สีเขียว = ว่าง, สีเทา = ไม่ว่าง, ถ้ามีการจอง 2 ที่ = สลับที่นั่ง, ถ้าคนเดียวจอง 2 ที่ = เปลี่ยนที่นั่ง</div>
+    <div class="text-xs text-gray-500 mt-2">สีเขียว = ว่าง, สีเทา = ไม่ว่าง, ยึดการแก้ไขล่าสุดเป็นคนที่ได้ที่นั่ง, ถ้าคนเดียวจอง 2 ที่ = เปลี่ยนที่นั่ง ,ส่งสถานะว่าง = ยกเลิกการจอง</div>
   </div>
 
   <!-- ตารางข้อมูลที่นั่ง -->
-  <div id="item-table-container" class="hidden md:grid-cols-1 gap-4 p-4 mt-16">
+  <div id="item-table-container" class="hidden gap-4 w-full mx-auto max-w-2xl mt-16 flex flex-col">
     <div class="flex justify-between items-center mb-4">
       <h2 class="text-xl font-bold text-gray-900 dark:text-white">ข้อมูลที่นั่ง</h2>
       <button id="add-item-button" class="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button"
@@ -66,11 +72,12 @@
       
     </div>
     <div>
-      <table id="item-table" class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+      <table id="item-table" class="w-full mx-auto text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
         <thead class="text-xs text-gray-700 uppercase bg-gray-100 dark:bg-gray-700 dark:text-gray-400">
           <tr>
-            <th scope="col" class="px-2 py-3">หมายเลขที่นั่ง</th>
-            <th scope="col" class="px-2 py-3">แถว</th>
+            <th scope="col" class="px-2 py-3">ที่นั่ง</th>
+            <th scope="col" class="px-2 py-3">ผู้จอง</th>
+            <th scope="col" class="px-2 py-3">สถานะ</th>
             <th scope="col" class="px-2 py-3">การจัดการ</th>
           </tr>
         </thead>

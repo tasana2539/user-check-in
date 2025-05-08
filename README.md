@@ -1,5 +1,9 @@
 # user-check-in
 
+url page : 
+- /admin.html
+- /index.html or /
+
 Example user check-in system.
 
 > **System Requirements**

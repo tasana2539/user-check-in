@@ -8,9 +8,6 @@ const renderDashboard = async(user) => {
     createTable(); // Fetch items from the server
     createSeat(); // Fetch seat data from the server
 
-    //show table content
-    document.getElementById('item-table-container').classList.remove('hidden');
-
     //remove signin-content
     document.getElementById('signin-content').remove();
 
@@ -140,18 +137,32 @@ async function getItems() {
 }
 
 async function createTable() {
+    document.getElementById('item-table-container').classList.remove('hidden');
     const data = await getItems();
     itemTable.clear();
 
     data.forEach(item => {
+
+        const booking = item.booking || '-';
+        const seat = `${item.category}${item.number}`;
+        const user = booking.user || '-';
+        const phone = booking.phone || '-';
+        const status = booking.status || 'available';
+        const bookingDetailed = booking ? `<div class="text-sm text-gray-500">ผู้จอง: ${user}<br>เบอร์โทร: ${phone}</div>` : '-';
+        const statusClass = status === 'available' ? 'text-green-600' : 'text-blue-600';
+        const statusText = status === 'available' ? 'ว่าง' : 'จองแล้ว';
+        const statusBadge = `<span class="${statusClass} font-bold">${statusText}</span>`;
+
+        // Add row to DataTable
         itemTable.row.add([
-            item.number || '-',
-            item.category || '-',
+            seat,
+            bookingDetailed,
+            statusBadge,
             `<a class="delete-item-btn text-red-600" data-id="${item._id}">ลบ</a>`
         ]);
     });
 
-    itemTable.order([[1, 'asc']]).draw(false); // sort ก่อน render
+    itemTable.order([[0, 'asc']]).draw(false); // sort ก่อน render
 }
 
 // Attach delete listeners
