@@ -27,6 +27,9 @@ Example user check-in system.
    Open a terminal in the project directory and run:
    ```powershell
    npm install
+
+   ***use this : Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+   if found the error : PowerShell is blocking the execution of scripts ***
    ```
 
 2. **Set up MongoDB**  
